@@ -1,4 +1,5 @@
 #!/bin/bash
+# mount EFS and read/write file to temporary batch instance specific directory
 if [[ -z $EFS_NAME || -z $AWS_BATCH_JOB_ID ]]; then
   echo "$0 EFS_NAME and/or AWS_BATCH_JOB_ID environment variables not set"; exit 1
 fi
@@ -9,7 +10,7 @@ mkdir $EFS_MOUNT_POINT
 echo "* df -h"
 df -h
 
-# mount EFS filesystem to mount point and chown to batch user
+# mount EFS filesystem to mount point
 # need -E so AWS_SHARED_CREDENTIALS_FILE env var is available to mount_efs.sh
 sudo -E /batch/mount_efs.sh $EFS_NAME $EFS_MOUNT_POINT
 if [[ $? -ne 0 ]]; then

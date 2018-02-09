@@ -1,5 +1,5 @@
 #!/bin/bash
-# mount EFS filesystem to mount point and chown to user
+# mount EFS filesystem to specified mount point
 if [[ $# -lt 2 ]]; then
   echo "$0 <efs_name> <mount_point> [efs_ip]"; exit 1
 fi

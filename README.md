@@ -40,7 +40,7 @@ NOTE: this bit isnt fully tested, but should be enough to give you an idea
     }
     ```
  3. Create managed batch compute environment with private subnet above (with `Enable user-specified AMI ID` unchecked)
- 4. Create a **privileged** batch job definition `aws_batch_efs` with IAM role created above, using 
+ 4. Create a **privileged** batch job definition `aws_batch_efs` using IAM role created above
  5. Create batch job queue `aws_batch_efs_queue`
  6. Create ECR repository `aws_batch_efs`
  7. Create EFS filesystem with name `batch` and enable mount target in same subnet(s) as batch compute environment
