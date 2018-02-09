@@ -3,7 +3,7 @@
 Example on how to mount an AWS EFS filesystem from within a managed AWS Batch job using standard [Amazon ECS-Optimized AMI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html)
 
 Reason to do this is when >~8GB of disk is required and you don't wan't to use a custom AMI that 
-involves messing around with EBS volumes and SSH'ing into them (see "Creating the custom AMI for AWS Batch" 
+involves messing around with EBS volumes and SSH'ing into instances (see "Creating the custom AMI for AWS Batch" 
 [here](https://aws.amazon.com/blogs/compute/building-high-throughput-genomic-batch-workflows-on-aws-batch-layer-part-3-of-4/))
 
 Good AWS forum post [How much disk space comes on a managed environment?](https://forums.aws.amazon.com/thread.jspa?threadID=250705) highlighting the current limitation
