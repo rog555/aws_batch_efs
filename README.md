@@ -16,13 +16,13 @@ Good AWS forum post [How much disk space comes on a managed environment?](https:
 
 Downside is that EFS costs 3x more than EBS, maybe when the [ECS Agent supports volume drivers](https://github.com/aws/amazon-ecs-agent/issues/236) this will be easier & cheaper
 
-Mounting EFS from within running batch container is only possible with the batch [job definition parameter](https://docs.aws.amazon.com/batch/latest/userguide/job_definition_parameters.html) set to True 
+Mounting EFS from within running batch container is only possible with the **privileged** batch [job definition parameter](https://docs.aws.amazon.com/batch/latest/userguide/job_definition_parameters.html) set to True 
 
 > When this parameter is true, the container is given elevated privileges on the host container instance (similar to the root user). This parameter maps to Privileged in the Create a container section of the Docker Remote API and the --privileged option to docker run.
 
-### Unmanaged AWS Batch
+### Other Options
 
-For unmanaged batch compute environments, see:
+For unmanaged batch compute environments or managed using custom API, see:
 
  1. [How do I increase the default 10 GiB storage limit with Docker container volumes for ECS?](https://aws.amazon.com/premiumsupport/knowledge-center/increase-default-ecs-docker-limit/)
  2. [Bootstrapping Container Instances with Amazon EC2 User Data](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/bootstrap_container_instance.html)
@@ -30,6 +30,7 @@ For unmanaged batch compute environments, see:
 ### General AWS Batch Links
 
  1. [AWS re:Invent 2017: AWS Batch: Easy and Efficient Batch Computing on AWS (CMP323)](https://www.youtube.com/watch?v=8dApnlJLY54)
+ 2. [AWS Batch 2018 Roadmap](https://youtu.be/8dApnlJLY54?t=749) (from re:Invent 2017 video above)
 
 ## Setup
 
