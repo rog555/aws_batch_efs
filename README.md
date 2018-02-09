@@ -2,10 +2,14 @@
 
 Example on how to mount an AWS EFS filesystem from within running AWS Batch job
 
+Reason to do this is when >~7GB of disk is required and you don't wan't to use a custom AMI that 
+involves messing around with EBS volumes.
+
 ## Setup
 
- 1. Ensure VPC private subnet has auto-assign public IP enabled or is behind NAT gateway or batch job will remain at RUNNABLE
- 2. Create ECS IAM Role for batch job with inline policy
+ 1. Ensure VPC private subnet has auto-assign public IP enabled or is behind NAT gateway or batch job
+    will remain at RUNNABLE state
+ 2. Create ECS IAM Role for batch job with inline policy:
     ```
     {
         "Version": "2012-10-17",
@@ -22,20 +26,29 @@ Example on how to mount an AWS EFS filesystem from within running AWS Batch job
         ]
     }
     ```
- 3. Create managed batch compute environment with private subnet
+ 3. Create managed batch compute environment with private subnet above
  4. Create job definition `aws_batch_efs` with IAM role created above
  5. Create batch job queue `aws_batch_efs_queue`
  6. Create ECR repository `aws_batch_efs`
  7. Create EFS filesystem with name `batch` and enable mount target in same subnet(s) as batch compute environment
  8. Install docker and build image: `./build.sh`
  9. Update `AWS_ACCOUNT_ID` in `push.sh` and any other variables required and push docker image to ECR: `./push.sh`
- 11. submit job either through the console or using `submit_job.py` (need to `pip install gevent boto3` if not already installed)
+ 11. submit job either through the console or using `batch.py` (need to `pip install gevent boto3` if not already installed)
 
-## Example Output
+## Output
+
+The following is happening here:
+
+ 1. `run.sh` executes `mount_efs.sh` passing the name of the EFS filesystem `batch` and mount point `/mnt/efs/batch`
+ 2. `mount_efs.sh` looks up the EFS mount target IP for the subnet the batch container is running in and mounts it
+ 3. `run.sh` creates a unique temporary directory below `/mnt/efs/batch` based on `AWS_BATCH_JOB_ID` environment variable
+    that AWS Batch makes available to the container
+ 4. `run.sh` writes and reads a file
+ 5. `run.sh` deletes temporary directory from EFS
 
 ```
 $ ./batch.py submit -q aws_batch_efs_queue -d aws_batch_efs -j aws_batch_efs_1 -e EFS_NAME=batch
-submitted job aws_batch_efs_1 from definition ID aws_batch_efs:1 with ID 6278155d-5f3b-4b4f-b1a7-4cc33947a4cb
+submitted job aws_batch_efs_1 from definition ID aws_batch_efs:1 with ID 58e88733-1d61-4912-a8bg-934249940edc
 2018-02-09T00:27:27Z status is SUBMITTED
 2018-02-09T00:27:37Z status is RUNNABLE
 2018-02-09T00:27:47Z status is RUNNING
