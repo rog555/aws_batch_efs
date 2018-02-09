@@ -18,6 +18,8 @@ Downside is that EFS costs 3x more than EBS, maybe when the [ECS Agent supports 
 
 ## Setup
 
+NOTE: this bit isnt fully tested, but should be enough to give you an idea
+
  1. Ensure VPC private subnet has auto-assign public IP enabled or is behind NAT gateway or batch job
     will remain at RUNNABLE state
  2. Create ECS IAM Role for batch job with inline policy:
@@ -37,8 +39,8 @@ Downside is that EFS costs 3x more than EBS, maybe when the [ECS Agent supports 
         ]
     }
     ```
- 3. Create managed batch compute environment with private subnet above
- 4. Create a privileged batch job definition `aws_batch_efs` with IAM role created above
+ 3. Create managed batch compute environment with private subnet above (with `Enable user-specified AMI ID` unchecked)
+ 4. Create a **privileged** batch job definition `aws_batch_efs` with IAM role created above, using 
  5. Create batch job queue `aws_batch_efs_queue`
  6. Create ECR repository `aws_batch_efs`
  7. Create EFS filesystem with name `batch` and enable mount target in same subnet(s) as batch compute environment
