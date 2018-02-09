@@ -1,9 +1,20 @@
 # aws_batch_efs
 
-Example on how to mount an AWS EFS filesystem from within running AWS Batch job
+Example on how to mount an AWS EFS filesystem from within a managed AWS Batch job
 
-Reason to do this is when >~7GB of disk is required and you don't wan't to use a custom AMI that 
-involves messing around with EBS volumes.
+Reason to do this is when >~8GB of disk is required and you don't wan't to use a custom AMI that 
+involves messing around with EBS volumes and SSH'ing into them (see "Creating the custom AMI for AWS Batch" 
+[here](https://aws.amazon.com/blogs/compute/building-high-throughput-genomic-batch-workflows-on-aws-batch-layer-part-3-of-4/))
+
+Good AWS forum post [How much disk space comes on a managed environment?](https://forums.aws.amazon.com/thread.jspa?threadID=250705) highlighting the current limitation
+
+> Managed Compute Environments currently launch the ECS Optimized AMI which includes an 8GB volume for the operating system and a 22GB volume for Docker image and metadata storage. The default Docker configuration allocates up to 10GB of this storage to each container instance. You can read more about this AMI at:
+
+> http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+
+> For now, your best option is to use Unmanaged Compute Environments which allow you to run instances using any AMI meeting our minimum system requirements. 
+
+Downside is that EFS costs 3x more than EBS, maybe when the [ECS Agent supports volume drivers](https://github.com/aws/amazon-ecs-agent/issues/236) this will be easier & cheaper
 
 ## Setup
 
@@ -27,7 +38,7 @@ involves messing around with EBS volumes.
     }
     ```
  3. Create managed batch compute environment with private subnet above
- 4. Create job definition `aws_batch_efs` with IAM role created above
+ 4. Create a privileged batch job definition `aws_batch_efs` with IAM role created above
  5. Create batch job queue `aws_batch_efs_queue`
  6. Create ECR repository `aws_batch_efs`
  7. Create EFS filesystem with name `batch` and enable mount target in same subnet(s) as batch compute environment
