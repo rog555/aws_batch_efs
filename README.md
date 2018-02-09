@@ -24,7 +24,7 @@ Mounting EFS from within running batch container is only possible with the batch
 
 For unmanaged batch compute environments, see:
 
- 1. [How do I increase the default 10 GiB storage limit with Docker container volumes for ECS?](https://aws.amazon.com/premiumsupport/knowledge-center/increase-default-ecs-docker-limit/) for unmanaged 
+ 1. [How do I increase the default 10 GiB storage limit with Docker container volumes for ECS?](https://aws.amazon.com/premiumsupport/knowledge-center/increase-default-ecs-docker-limit/)
  2. [Bootstrapping Container Instances with Amazon EC2 User Data](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/bootstrap_container_instance.html)
 
 ### General AWS Batch Links
