@@ -39,12 +39,13 @@ involves messing around with EBS volumes.
 
 The following is happening here:
 
- 1. `run.sh` executes `mount_efs.sh` passing the name of the EFS filesystem `batch` and mount point `/mnt/efs/batch`
- 2. `mount_efs.sh` looks up the EFS mount target IP for the subnet the batch container is running in and mounts it
- 3. `run.sh` creates a unique temporary directory below `/mnt/efs/batch` based on `AWS_BATCH_JOB_ID` environment variable
+ 1. `batch.py` submits job passing in environment variable `EFS_NAME=batch` and then waits for it to complete before dumping the log of the job
+ 2. `run.sh` executes `mount_efs.sh` passing the name of the EFS filesystem `batch` and mount point `/mnt/efs/batch`
+ 3. `mount_efs.sh` looks up the EFS mount target IP for the subnet the batch container is running in and mounts it
+ 4. `run.sh` creates a unique temporary directory below `/mnt/efs/batch` based on `AWS_BATCH_JOB_ID` environment variable
     that AWS Batch makes available to the container
- 4. `run.sh` writes and reads a file
- 5. `run.sh` deletes temporary directory from EFS
+ 5. `run.sh` writes and reads a file
+ 6. `run.sh` deletes temporary directory from EFS
 
 ```
 $ ./batch.py submit -q aws_batch_efs_queue -d aws_batch_efs -j aws_batch_efs_1 -e EFS_NAME=batch
