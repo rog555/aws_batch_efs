@@ -298,7 +298,7 @@ if __name__ == "__main__":
         sys.exit(0)
 
     if job_id is None:
-        fatal('job %s not found on queue %s' % args.queue)
+        fatal('job %s not found on queue %s' % (args.job, args.queue))
 
     elif args.operation == 'log':
         get_job_log(job_id, print_log=True)

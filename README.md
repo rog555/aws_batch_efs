@@ -99,7 +99,45 @@ ls: cannot access /mnt/efs/batch/*: No such file or directory
 COMPLETE
 ```
 
+## batch.py other stuff
 
+Some other functionality of `batch.py`
 
+### list jobs
+
+```
+$ export BATCH_QUEUE=aws_batch_efs_queue
+$ ./batch.py jobs
+SUBMITTED       PENDING         RUNNABLE        STARTING        RUNNING         SUCCEEDED       FAILED
+                                                                                                aws_batch_efs_2
+                                                                                aws_batch_efs_1
+                                aws_batch_efs_3
+```
+
+### get job logs
+
+```
+$ export BATCH_QUEUE=aws_batch_efs_queue
+$ ./batch.py log -j aws_batch_efs_2
+/batch/run.sh EFS_NAME and/or AWS_BATCH_JOB_ID environment variables not set
+```
+
+### wait for submitted job to complete
+
+```
+$ export BATCH_QUEUE=aws_batch_efs_queue
+$ ./batch.py wait -j aws_batch_efs_3
+2018-02-09T02:21:09Z status is SUBMITTED
+2018-02-09T02:21:19Z status is RUNNABLE
+```
+
+### submit unique job based on name
+
+```
+$ export BATCH_QUEUE=aws_batch_efs_queue
+$ export BATCH_DEFN_NAME=aws_batch_efs
+$ ./batch.py submit -j aws_batch_efs_3
+ERROR: job 'aws_batch_efs_3' already processing with status RUNNABLE
+```
 
 
